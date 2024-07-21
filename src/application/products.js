@@ -1,9 +1,4 @@
-"use strict";
-
-import express from "express";
-
-const app = express();
-app.use(express.json());
+import {createProductDto} from "./dto/products.js";
 
 const products = [
   {
@@ -80,11 +75,39 @@ const products = [
   },
 ];
 
-app.get("/products", (req, res) => {
-  return res.status(200).json(products).send();
-});
+export const getProducts = (req, res) => {
+  console.log(req.query);
 
-app.get("/products/:id", (req, res) => {
+  if (req.query.categoryId) {
+    const categoryId = req.query.categoryId;
+    const filteredProducts = products.filter((product) => product.categoryId === categoryId);
+    return res.status(200).json(filteredProducts).send();
+  }
+
+  return res.status(200).json(products).send();
+};
+
+export const createProduct = (req, res) => {
+
+  //! We need to make sure that the data is always in the correct format
+  const product = createProductDto.safeParse(req.body); 
+
+  if (!product.success) {
+    return res.status(400).json({ message: `${product.error.message}`}).send();
+  }
+
+  products.push({
+    categoryId:product.data.categoryId,
+    image: product.data.image,
+    name: product.data.name,
+    price: product.data.price,
+    description: product.data.description,
+    id: (products.length + 1).toString()
+  });
+  return res.status(201).send();
+};
+
+export const getProductById = (req, res) => {
   const id = req.params.id;
   const product = products.find((product) => product.id === id);
   if (!product) {
@@ -92,16 +115,4 @@ app.get("/products/:id", (req, res) => {
   }
 
   return res.status(200).json(product).send();
-});
-
-app.post("/products", (req, res) => {
-  const product = req.body;
-  products.push(product);
-  return res.status(201).send();
-});
-
-const PORT = 8000;
-
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
+};
