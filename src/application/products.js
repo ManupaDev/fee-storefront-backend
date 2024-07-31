@@ -1,6 +1,7 @@
-import {createProductDto} from "./dto/products.js";
+import Product from "../infrastructure/schemas/Product.js";
+import { createProductDto } from "./dto/products.js";
 
-const products = [
+const _products = [
   {
     categoryId: "1",
     image: "/assets/products/airpods-max.png",
@@ -75,41 +76,45 @@ const products = [
   },
 ];
 
-export const getProducts = (req, res) => {
+export const getProducts = async (req, res) => {
   console.log(req.query);
 
   if (req.query.categoryId) {
     const categoryId = req.query.categoryId;
-    const filteredProducts = products.filter((product) => product.categoryId === categoryId);
+    const filteredProducts = _products.filter(
+      (product) => product.categoryId === categoryId
+    );
     return res.status(200).json(filteredProducts).send();
   }
 
+  const products = await Product.find();
   return res.status(200).json(products).send();
 };
 
-export const createProduct = (req, res) => {
-
+export const createProduct = async (req, res) => {
   //! We need to make sure that the data is always in the correct format
-  const product = createProductDto.safeParse(req.body); 
+  const product = createProductDto.safeParse(req.body);
 
   if (!product.success) {
-    return res.status(400).json({ message: `${product.error.message}`}).send();
+    return res
+      .status(400)
+      .json({ message: `${product.error.message}` })
+      .send();
   }
 
-  products.push({
-    categoryId:product.data.categoryId,
+  await Product.create({
+    categoryId: product.data.categoryId,
     image: product.data.image,
     name: product.data.name,
     price: product.data.price,
     description: product.data.description,
-    id: (products.length + 1).toString()
   });
   return res.status(201).send();
 };
 
 export const getProductById = (req, res) => {
   const id = req.params.id;
-  const product = products.find((product) => product.id === id);
+  const product = _products.find((product) => product.id === id);
   if (!product) {
     return res.status(404).json({ message: "Product not found" }).send();
   }

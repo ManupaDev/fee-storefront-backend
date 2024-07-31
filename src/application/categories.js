@@ -1,4 +1,5 @@
-import {createCategoryDto} from "./dto/categories.js";
+import { createCategoryDto } from "./dto/categories.js";
+import Category from "../infrastructure/schemas/Category.js";
 
 const categories = [
   { id: "1", name: "Headphones" },
@@ -12,7 +13,7 @@ export const getCategories = (req, res) => {
   return res.status(200).json(categories).send();
 };
 
-export const createCategory = (req, res) => {
+export const createCategory = async (req, res) => {
   //! We need to make sure that the data is always in the correct format
   const category = createCategoryDto.safeParse(req.body);
 
@@ -20,11 +21,7 @@ export const createCategory = (req, res) => {
     return res.status(400).json({ message: "Invalid data" }).send();
   }
 
-  categories.push({
-    id: category.data.id,
-    name: category.data.name,
-    id: (categories.length + 1).toString(),
-  });
+  await Category.create({ id: category.data.id, name: category.data.name });
   return res.status(201).send();
 };
 
