@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 
 const ProductSchema = new mongoose.Schema({
-  categoryId: {
-    type: String,
+  categoryId: { 
+    type: mongoose.Schema.Types.ObjectId, // Reference type
+    ref: 'Category', // Name of the referenced schema
     required: true,
   },
   image: {
@@ -15,6 +16,7 @@ const ProductSchema = new mongoose.Schema({
   },
   price: {
     type: String,
+
   },
   description: {
     type: String,

@@ -112,12 +112,13 @@ export const createProduct = async (req, res) => {
   return res.status(201).send();
 };
 
-export const getProductById = (req, res) => {
+export const getProductById = async (req, res) => {
   const id = req.params.id;
-  const product = _products.find((product) => product.id === id);
+  // const product = _products.find((product) => product.id === id);
+  const product = await Product.findById(id).populate('categoryId');
   if (!product) {
-    return res.status(404).json({ message: "Product not found" }).send();
+    return res.status(404).json({ message: "Product not found" })
   }
 
-  return res.status(200).json(product).send();
+  return res.status(200).json(product)
 };
