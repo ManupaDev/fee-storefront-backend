@@ -1,10 +1,9 @@
 import mongoose from "mongoose";
 
-
 const ProductSchema = new mongoose.Schema({
   categoryId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
+    ref: "Category",
     required: true,
   },
   image: {
