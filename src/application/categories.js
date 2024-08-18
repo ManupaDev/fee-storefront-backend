@@ -3,7 +3,7 @@ import Category from "../infrastructure/schemas/Category.js";
 
 export const getCategories = async (req, res) => {
   const categories = await Category.find();
-  return res.status(200).json(categories).send();
+  return res.status(200).json(categories);
 };
 
 export const createCategory = async (req, res) => {
