@@ -31,3 +31,14 @@ export const getOrderById = async (req, res) => {
 
   return res.status(200).json(order).send();
 };
+
+export const getOrdersByUser = async (req, res) => {
+  const userId = req.params.userId;
+
+  const order = await Order.find({ userId: userId }).populate({
+    path: "orderProducts.productId",
+    model: "Product",
+  });
+
+  return res.status(200).json(order).send();
+};
