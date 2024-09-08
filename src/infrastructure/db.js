@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 export const connectDB = async () => {
   try {
     const connectionString =
-      "mongodb+srv://stemlinkonline:B2ue0ykevY5bTRQd@cluster0.3ebkfv2.mongodb.net/dev?retryWrites=true&w=majority&appName=Cluster0";
+      process.env.DATABASE_URL;
     await mongoose.connect(connectionString);
     console.log("Connected to the database");
   } catch (error) {

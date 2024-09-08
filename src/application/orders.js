@@ -5,10 +5,7 @@ export const createOrder = async (req, res) => {
   const order = createOrderDto.safeParse(req.body);
 
   if (!order.success) {
-    return res
-      .status(400)
-      .json({ message: `${order.error.message}` })
-      .send();
+    throw new ValidationError(order.error.message);
   }
 
   await Order.create({
@@ -26,7 +23,7 @@ export const getOrderById = async (req, res) => {
   });
 
   if (!order) {
-    return res.status(404).json({ message: "Order not found" }).send();
+    throw new NotFoundError("Order not found");
   }
 
   return res.status(200).json(order).send();
