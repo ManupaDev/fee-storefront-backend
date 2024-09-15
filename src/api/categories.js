@@ -4,10 +4,14 @@ import {
   getCategoryById,
   createCategory,
 } from "../application/categories.js";
+import AuthorizationMiddleware from "./../api/middleware/authorization-middleware.js";
 
 const categoriesRouter = express.Router();
 
-categoriesRouter.route("/").get(getCategories).post(createCategory);
+categoriesRouter
+  .route("/")
+  .get(getCategories)
+  .post(ClerkExpressRequireAuth({}), AuthorizationMiddleware, createCategory);
 
 categoriesRouter.route("/:id").get(getCategoryById);
 
