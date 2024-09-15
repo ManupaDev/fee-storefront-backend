@@ -16,6 +16,7 @@ export const createOrder = async (req, res) => {
     orderProducts: order.data.orderProducts,
     address: order.data.address,
   });
+  res.cookie("ORDER_ID", createdOrder._id);
   return res.status(201).json(createdOrder);
 };
 

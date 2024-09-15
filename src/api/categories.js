@@ -5,6 +5,7 @@ import {
   createCategory,
 } from "../application/categories.js";
 import AuthorizationMiddleware from "./../api/middleware/authorization-middleware.js";
+import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
 
 const categoriesRouter = express.Router();
 
