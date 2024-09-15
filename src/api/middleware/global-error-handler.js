@@ -5,6 +5,8 @@ export const globalErrorHandler = (err, req, res, next) => {
       return res.status(400).json({ message: err.message }).send();
     case "NotFoundError":
       return res.status(404).json({ message: err.message }).send();
+    case "ForbiddenError":
+      return res.status(403).json({ message: err.message }).send();
     default:
       return res.status(500).json({ message: err.message }).send();
   }
