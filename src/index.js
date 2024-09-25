@@ -20,7 +20,7 @@ app.use("/api/orders", ordersRouter);
 
 app.use(globalErrorHandler);
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 connectDB();
 
 app.listen(PORT, () => {
