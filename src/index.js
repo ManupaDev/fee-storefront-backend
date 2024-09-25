@@ -12,7 +12,7 @@ import cors from "cors";
 const app = express();
 
 app.use(express.json());
-app.use(cors({origin: "https://fee-storefront-frontend.netlify.app"}));
+app.use(cors());
 
 app.use("/api/products", productsRouter);
 app.use("/api/categories", categoriesRouter);
